@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Game</title>
+    <style>
+        .cards-container-game {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        .tree-container {
+            text-align: center;
+            position: relative;
+        }
+        .tree-container img {
+            width: 70%;
+            cursor: pointer;
+        }
+        .baskets-container {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 20px;
+        }
+        .basket {
+            position: relative;
+        }
+        .basket img {
+            width: 80px;
+            height: 80px;
+            z-index: 0;
+        }
+        .apple-holder {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            z-index: 1;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-left: 20px;
+        }
+        .buttons button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .moving-item {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            transition: transform 1s ease-in-out;
+            z-index: 1000;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+        }
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <h1>Kids Portal</h1>
+        </div>
+        <div class="navbar-right">
+            <h3 id="score">Score : 00</h3>
+            <div class="buttons">
+                <button onclick="submitBaskets()">Submit</button>
+                <button onclick="clearBaskets()">Clear All</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="cards-container-game">
+        <!-- Tree or Pot based on table number -->
+        <div class="tree-container">
+            <img id="tree" src="">
+            <h2 id="multiplication">1 x 1</h2>
+        </div>
+        <!-- Baskets for apples/flowers -->
+        <div class="baskets-container" id="baskets-container">
+            <!-- Baskets will be populated here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const tableNumber = parseInt(urlParams.get('table')) || 1;
+
+        const images = {
+            1: 'https://media.istockphoto.com/id/187890065/vector/wooden-basket-with-colorful-apples-vector-illustration.jpg?s=612x612&w=0&k=20&c=sw_5KjXa8puQ3XoVS4fYAvAff2lB8cNYsUodXQZNFuo=', // Apple Tree
+            2: 'https://i.imgur.com/8vPY9S7.png', // Flower Pot
+            3: 'https://i.imgur.com/z7D3EHi.png'  // Orange Tree
+        };
+        let clickCount = 0;
+        let currentMultiplier = 1; // Starting with 1x1
+        let score = 0;
+
+        // Initialize the game based on table number
+        function initGame() {
+            document.getElementById('tree').src = images[tableNumber] || images[1];
+            updateMultiplicationText();
+
+            // Create 10 baskets with an apple-holder inside each
+            const basketsContainer = document.getElementById('baskets-container');
+            basketsContainer.innerHTML = '';
+            for (let i = 1; i <= 10; i++) {
+                const basket = document.createElement('div');
+                basket.className = 'basket';
+                basket.innerHTML = `
+                    <img src="https://static.vecteezy.com/system/resources/previews/021/125/681/original/brown-basket-flat-icon-png.png" alt="Basket ${i}" id="basket${i}">
+                    <div class="apple-holder" id="apple-holder${i}"></div>
+                `;
+                basketsContainer.appendChild(basket);
+            }
+        }
+
+        // Function to update multiplication text based on table number and current multiplier
+        function updateMultiplicationText() {
+            document.getElementById('multiplication').innerText = `${tableNumber} x ${currentMultiplier}`;
+        }
+
+        // Function to handle tree/pot click
+        document.getElementById('tree').onclick = (event) => {
+            clickCount++;
+            const basketIndex = Math.ceil(clickCount / tableNumber); // Distribute apples/flowers evenly
+            const basket = document.getElementById(`basket${basketIndex}`);
+            if (basket) {
+                // Create the apple or flower element
+                const appleOrFlower = document.createElement('img');
+                appleOrFlower.src = (tableNumber === 2) ? 'https://i.imgur.com/8vPY9S7.png' : 'apple-3155.png'; // Flower for pot, apple for trees
+                appleOrFlower.className = 'moving-item';
+
+                // Append the item to the body to animate it
+                document.body.appendChild(appleOrFlower);
+
+                // Calculate positions for animation
+                const startX = event.clientX;
+                const startY = event.clientY;
+                const basketRect = basket.getBoundingClientRect();
+                const endX = basketRect.left + basket.offsetWidth / 2 - 20; // Adjust for item width
+                const endY = basketRect.top + basket.offsetHeight / 2 - 20; // Adjust for item height
+
+                // Set initial position
+                appleOrFlower.style.left = `${startX}px`;
+                appleOrFlower.style.top = `${startY}px`;
+
+                // Trigger the animation by setting the transform
+                requestAnimationFrame(() => {
+                    appleOrFlower.style.transform = `translate(${endX - startX}px, ${endY - startY}px)`;
+                });
+
+                // When animation ends, move the item to the basket permanently
+                appleOrFlower.addEventListener('transitionend', () => {
+                    // Remove the animated element
+                    document.body.removeChild(appleOrFlower);
+
+                    // Add a static apple/flower to the basket's apple-holder
+                    const appleHolder = document.getElementById(`apple-holder${basketIndex}`);
+                    const staticItem = document.createElement('img');
+                    staticItem.src = appleOrFlower.src;
+                    staticItem.style.width = '40px'; // Adjust size as needed
+                    staticItem.style.height ='40px';
+                    appleHolder.appendChild(staticItem);
+                });
+            }
+        };
+
+        // Function to clear all baskets
+        function clearBaskets() {
+            clickCount = 0;
+            const baskets = document.querySelectorAll('.baskets-container .apple-holder');
+            baskets.forEach(holder => holder.innerHTML = '');
+        }
+
+        // Function to submit the basket results
+        function submitBaskets() {
+            const requiredCount = tableNumber * currentMultiplier; // Calculate the required count for the current multiplication
+            let totalCount = 0;
+
+            // Count all apples/flowers in the baskets
+            for (let i = 1; i <= 10; i++) {
+                const basket = document.getElementById(`apple-holder${i}`);
+                totalCount += basket.querySelectorAll('.apple-holder img').length;
+            }
+            if (totalCount === requiredCount) {
+                alert('Congratulations!');
+                score=score+10;
+                document.getElementById('score').innerText = `Score: ${score}`;
+                currentMultiplier++; // Move to the next multiplication step
+                updateMultiplicationText();
+                clearBaskets();
+            } else {
+                alert('Try again!');
+            }
+        }
+
+        // Initialize the game when the page loads
+        window.onload = initGame;
+    </script>
+
+</body>
+</html>

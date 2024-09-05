@@ -1,0 +1,116 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.navbar-right .advanced-button,
+.navbar-right .home-button {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Slider Styles */
+.slider {
+    width: 100%;
+    max-height: 300px;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: none;
+}
+
+.slide.active {
+    display: block;
+}
+
+/* Cards Container */
+.cards-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+}
+
+/* Card Styles */
+.card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width:30%;
+}
+
+.card img {
+    max-width: 100%;
+    border-radius: 5px;
+    height: 70%;
+}
+
+.start-game-button,
+.play-button {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.play-button a{
+    text-decoration: none;
+    color:white;
+}
+
+.cards-container-game {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Aligns cards in rows */
+    margin: 20px;
+}
+
+/* Card Styles */
+.card-game {
+    background-color: #f9f9f9; /* Light grey background */
+    padding: 15px; /* Inner padding */
+    border-radius: 10px; /* Rounded corners */
+    text-align: center; /* Center-aligns text and buttons */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    margin: 10px; /* Space between cards */
+    width: 16%; /* Width of each card */
+}
+
+/* Card Image Styles */
+.card-game img {
+    max-width: 100%; /* Makes image fit the card width */
+    border-radius: 5px; /* Slight rounding on image corners */
+    margin-bottom: 10px; /* Space between image and text */
+    height:70%;
+}

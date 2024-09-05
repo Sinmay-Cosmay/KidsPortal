@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Game</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <h1>Kids Portal</h1>
+        </div>
+        <div class="navbar-right">
+            <button class="home-button" onclick="window.location.href='index.html'">Home</button>
+        </div>
+    </nav>
+
+    <!-- Cards for Tables -->
+    <div class="cards-container-game">
+        <!-- Creating 10 cards dynamically with images -->
+        <script>
+            const images = [
+                'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZW84MmV3eXk0b3JqN252MHZpbm1heHljZXd5dDB3aGI3OG1rcHV0eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0ExncehJzexFpRHq/giphy.webp',
+                'https://media4.giphy.com/media/pWUAXh4uHnnRPAjKQj/giphy.webp?cid=790b7611gxerar4lf41kvhvf6geaes32y1rv1g2971euc8bo&ep=v1_gifs_search&rid=giphy.webp&ct=g',
+                'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNndrNzlvMWgzZzh6emQxdjR4a2Jldm82Z3o3ZXgxZGlrNDVuaDZseSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0EwYkyU1JCExVquc/giphy.webp',
+                'https://i.pinimg.com/originals/5f/67/0e/5f670e86eb9b7bf7b410bf10502e7cc2.gif',
+                'https://media0.giphy.com/media/jTICSwJwDz3wa1PQmk/giphy.webp?cid=790b7611jh6bwvkqcfpxpp5bb24v0oh1c3n4b5a14dm6rbuw&ep=v1_gifs_search&rid=giphy.webp&ct=g',
+                'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGJ1OG54bjc4eGRvYmJudDNocGY0anF3a2p3NmpkejM0OWliODduMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/b6UnT7qxlhWJ8AtqOz/giphy.webp',
+                'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZG5ydWZlNDFjam85aXI5ODNuaGhpbWtiemlzM2liYjA1NDFjdWN0ZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/oXMA1wn0BDbVK/giphy.webp',
+                'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzg5OXRldjg2YjU3cmVoY21wcHdqbndqcTh3ZjFjeXpwOWI0dGtyeSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/B6bnealXUbW18QjPCd/giphy.webp',
+                'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXVxcTd2NHk1eDRlZWNnMWN1eHpwMWIwcWprdDJhNXh5ZG80NDZoeSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/6OyrnAKxd46Rfall6K/giphy.webp',
+                'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNzc4amJpd2pycDZ1OHdiYW5vamZ2N2Fvam4zYWlkb3JtcnRtbWFkayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/L6H0acoYt82e4r0Sgn/giphy.webp'
+            ];
+
+            for (let i = 1; i <= 10; i++) {
+                document.write(`
+                    <div class="card-game">
+                        <img src="${images[i - 1]}" alt="Card Image ${i}">
+                        <h3>Table for ${i}</h3>
+                        <button class="play-button">
+                            <a href="play.html?table=${i}">Play</a>
+                        </button>
+                    </div>
+                `);
+            }
+        </script>
+    </div>
+</body>
+</html>
