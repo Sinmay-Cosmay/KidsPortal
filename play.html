@@ -7,31 +7,77 @@
     <link rel="stylesheet" href="styles.css">
     <title>Game</title>
     <style>
-        .cards-container-game {
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
             display: flex;
-            gap: 20px;
-            margin-top: 20px;
-            justify-content: center;
-        }
+            justify-content: center; 
+            align-items: center;
+          }
+          
+          /* Modal content */
+          .modal-content {
+            background: rgb(248,231,180);
+background: radial-gradient(circle, rgba(248,231,180,1) 0%, rgba(211,241,222,1) 100%);
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center; 
+            position: relative; 
+          }
+          .modal-content img{
+            width:50%;
+          }
+          
+          /* Close button */
+          .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+          }
+          
+          .close:hover,
+          .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+          }
+          .cards-container-game {
+    display: flex;
+    flex-direction: column; /* Arrange tree and baskets vertically */
+    align-items: center; /* Center the items horizontally */
+    gap: 20px;
+    margin-top: 20px;
+}
         .tree-container {
             text-align: center;
             position: relative;
         }
         .tree-container img {
-            width: 70%;
+            width: 35%;
             cursor: pointer;
         }
         .baskets-container {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 20px;
-        }
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 20px;
+    justify-content: center; /* Center the baskets */
+}
         .basket {
             position: relative;
         }
         .basket img {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             z-index: 0;
         }
         .apple-holder {
@@ -71,6 +117,52 @@
             display: flex;
             align-items: center;
         }
+        .monkey-container {
+    float: left;
+    position: fixed;
+    left: 0;
+    top: 100px;
+}
+
+.monkey-container img {
+    height: 60%;
+    width: 70%;
+}
+
+.monkey-container-right {
+    float: right;
+    position: fixed;
+    right: 0;
+    top: 100px;
+    transform: scaleX(-1);
+}
+
+.monkey-container-right img {
+    height: 60%;
+    width: 70%;
+}
+
+.quote-box {
+    background: rgb(162,244,214);
+background: radial-gradient(circle, rgba(162,244,214,1) 0%, rgba(218,229,245,1) 100%);
+    border-left: 5px solid #45dbb3;
+    padding: 10px;
+    margin-top: 10px;
+    width: 150px;
+    position: absolute;
+}
+
+.quote-box-left {
+    left: 220px; /* Adjust to position near the left monkey */
+    top: 50px;
+}
+
+.quote-box-right {
+    right: -80px; /* Adjust to position near the right monkey */
+    top: 50px;
+    transform: scaleX(-1); /* Move it next to the right monkey */
+}
+
     </style>
 </head>
 <body>
@@ -80,32 +172,51 @@
             <h1>Kids Portal</h1>
         </div>
         <div class="navbar-right">
-            <h3 id="score">Score : 00</h3>
+            <!-- <h3 id="score">Score : 00</h3> -->
             <div class="buttons">
                 <button onclick="submitBaskets()">Submit</button>
                 <button onclick="clearBaskets()">Clear All</button>
             </div>
         </div>
     </nav>
-
+    <div class="monkey-container">
+        <img src="https://media.tenor.com/eHSxO0p2DEkAAAAi/bolite-conrad-digital.gif">
+        <div class="quote-box quote-box-left">
+            <p>"Hey, I am Sam. Please fill some apples in our baskets. We are hungry."</p>
+        </div>
+    </div>
+    <div class="monkey-container-right">
+        <img src="https://media.tenor.com/eHSxO0p2DEkAAAAi/bolite-conrad-digital.gif">
+        <div class="quote-box quote-box-right">
+            <p>"Hey, I am Ram. We are starving. Give us some apples please !!!"</p>
+        </div>
+    </div>
     <div class="cards-container-game">
+
         <!-- Tree or Pot based on table number -->
         <div class="tree-container">
             <img id="tree" src="">
-            <h2 id="multiplication">1 x 1</h2>
         </div>
         <!-- Baskets for apples/flowers -->
         <div class="baskets-container" id="baskets-container">
             <!-- Baskets will be populated here dynamically -->
         </div>
     </div>
-
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p id="modalContent" style="display: none;"></p>
+          <img src="https://img.freepik.com/premium-vector/cute-vector-illustration-monkey-saying-thank-you_864129-435.jpg?w=740">
+          <p id="multiplication"></p>
+        </div>
+      </div>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const tableNumber = parseInt(urlParams.get('table')) || 1;
-
+        var modal = document.getElementById("myModal");
+        var closeBtn = document.getElementsByClassName("close")[0];
         const images = {
-            1: 'https://media.istockphoto.com/id/187890065/vector/wooden-basket-with-colorful-apples-vector-illustration.jpg?s=612x612&w=0&k=20&c=sw_5KjXa8puQ3XoVS4fYAvAff2lB8cNYsUodXQZNFuo=', // Apple Tree
+            1: 'https://png.pngtree.com/png-clipart/20230913/original/pngtree-orchard-clipart-cartoon-apple-tree-with-lots-of-apples-vector-png-image_11069018.png', // Apple Tree
             2: 'https://i.imgur.com/8vPY9S7.png', // Flower Pot
             3: 'https://i.imgur.com/z7D3EHi.png'  // Orange Tree
         };
@@ -116,7 +227,7 @@
         // Initialize the game based on table number
         function initGame() {
             document.getElementById('tree').src = images[tableNumber] || images[1];
-            updateMultiplicationText();
+            //updateMultiplicationText();
 
             // Create 10 baskets with an apple-holder inside each
             const basketsContainer = document.getElementById('baskets-container');
@@ -130,12 +241,30 @@
                 `;
                 basketsContainer.appendChild(basket);
             }
+            modal.style.display ="none";
         }
 
         // Function to update multiplication text based on table number and current multiplier
-        function updateMultiplicationText() {
-            document.getElementById('multiplication').innerText = `${tableNumber} x ${currentMultiplier}`;
+        function updateMultiplicationText(totalCount) {
+            if(clickCount>tableNumber*10){
+                clickCount=tableNumber*10;
+            }
+            document.getElementById('multiplication').innerText = `Thank you for filling my basket with ${tableNumber} x ${clickCount} = ${totalCount} apples`;
+            document.getElementById('modalContent').innerText =`Thank you for filling my basket with ${tableNumber} ${clickCount}s are equals to ${totalCount} apples. You are the best !`;
         }
+
+        const tableMoveImages ={
+            1:"apple-3155.png",
+            2:"",
+            3:"",
+            4:"",
+            5:"",
+            6:"",
+            7:"",
+            8:"",
+            9:"",
+            10:""
+        };
 
         // Function to handle tree/pot click
         document.getElementById('tree').onclick = (event) => {
@@ -145,7 +274,7 @@
             if (basket) {
                 // Create the apple or flower element
                 const appleOrFlower = document.createElement('img');
-                appleOrFlower.src = (tableNumber === 2) ? 'https://i.imgur.com/8vPY9S7.png' : 'apple-3155.png'; // Flower for pot, apple for trees
+                appleOrFlower.src = tableMoveImages[tableNumber];
                 appleOrFlower.className = 'moving-item';
 
                 // Append the item to the body to animate it
@@ -189,30 +318,51 @@
             const baskets = document.querySelectorAll('.baskets-container .apple-holder');
             baskets.forEach(holder => holder.innerHTML = '');
         }
+        function speakModalContent() {
+            var speech = new SpeechSynthesisUtterance();
+            // Get the text from the modal content a
+            var content = document.getElementById("modalContent").innerText;
+            console.log(content);
+            // Set the text to be read
+            speech.text = content;
+      
+            // Speak the text
+            window.speechSynthesis.speak(speech);
+            console.log(speech);
+          }
 
         // Function to submit the basket results
         function submitBaskets() {
-            const requiredCount = tableNumber * currentMultiplier; // Calculate the required count for the current multiplication
+           // const requiredCount = tableNumber * currentMultiplier; // Calculate the required count for the current multiplication
             let totalCount = 0;
-
             // Count all apples/flowers in the baskets
             for (let i = 1; i <= 10; i++) {
                 const basket = document.getElementById(`apple-holder${i}`);
                 totalCount += basket.querySelectorAll('.apple-holder img').length;
             }
-            if (totalCount === requiredCount) {
-                alert('Congratulations!');
+            // alert(tableNumber + 'X' + clickCount + '=' + totalCount);
+            updateMultiplicationText(totalCount);
+            modal.style.display = "block";
+            speakModalContent();
+            /* if (totalCount === requiredCount) {
                 score=score+10;
                 document.getElementById('score').innerText = `Score: ${score}`;
                 currentMultiplier++; // Move to the next multiplication step
                 updateMultiplicationText();
                 clearBaskets();
-            } else {
-                alert('Try again!');
+            } */
+        }
+        // Close the modal when the 'X' button is clicked
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+       window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
             }
         }
-
         // Initialize the game when the page loads
+        modal.style.display = "none";
         window.onload = initGame;
     </script>
 
