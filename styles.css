@@ -3,30 +3,29 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family:cursive;
 }
 
 /* Navbar Styles */
 .navbar {
+    background: rgb(8,8,43);
+    background: linear-gradient(90deg, rgba(8,8,43,1) 0%, rgba(34,34,116,1) 35%, rgba(8,8,43,1) 100%);    
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
     background-color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-left h1 {
     font-size: 24px;
-    color: #333;
+    color: white;
 }
 
 .navbar-right .advanced-button,
 .navbar-right .home-button {
-    padding: 10px 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
+    padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
 }
@@ -59,7 +58,8 @@
 
 /* Card Styles */
 .card {
-    background-color: #f9f9f9;
+    background: rgb(249,246,254);
+background: radial-gradient(circle, rgba(249,246,254,1) 0%, rgba(247,234,240,1) 100%);
     padding: 15px;
     border-radius: 10px;
     text-align: center;
@@ -75,10 +75,7 @@
 
 .start-game-button,
 .play-button {
-    padding: 10px 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
+    padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
@@ -86,7 +83,7 @@
 
 .play-button a{
     text-decoration: none;
-    color:white;
+    color:black;
 }
 
 .cards-container-game {
@@ -98,7 +95,8 @@
 
 /* Card Styles */
 .card-game {
-    background-color: #f9f9f9; /* Light grey background */
+    background: rgb(249,246,254);
+background: radial-gradient(circle, rgba(249,246,254,1) 0%, rgba(247,234,240,1) 100%);
     padding: 15px; /* Inner padding */
     border-radius: 10px; /* Rounded corners */
     text-align: center; /* Center-aligns text and buttons */
@@ -112,5 +110,5 @@
     max-width: 100%; /* Makes image fit the card width */
     border-radius: 5px; /* Slight rounding on image corners */
     margin-bottom: 10px; /* Space between image and text */
-    height:70%;
+    height:65%;
 }
